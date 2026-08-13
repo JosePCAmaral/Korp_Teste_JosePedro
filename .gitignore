@@ -1,0 +1,21 @@
+# Visual Studio
+.vs/
+*.user
+*.suo
+
+# Build results
+bin/
+obj/
+
+# NuGet
+*.nupkg
+**/packages/*
+
+# Angular / Node (para quando criarmos o frontend)
+node_modules/
+dist/
+.angular/
+
+# OS
+.DS_Store
+Thumbs.db
