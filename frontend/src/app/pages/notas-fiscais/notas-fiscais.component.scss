@@ -1,0 +1,24 @@
+.notas-container {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 24px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.form-item {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+.tabela-itens {
+  width: 100%;
+  margin: 16px 0;
+}
+
+.btn-criar {
+  margin-top: 8px;
+}
