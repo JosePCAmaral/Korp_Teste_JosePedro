@@ -1,4 +1,76 @@
-/* You can add global styles to this file, and also import other style files */
+@use '@angular/material' as mat;
+
+$app-primary: mat.m2-define-palette(mat.$m2-teal-palette, 700, 500, 900);
+$app-accent: mat.m2-define-palette(mat.$m2-amber-palette, 700, 300, 900);
+$app-warn: mat.m2-define-palette(mat.$m2-deep-orange-palette, 800, 400, 900);
+
+$app-typography: mat.m2-define-typography-config(
+  $font-family: 'Roboto, "Helvetica Neue", sans-serif'
+);
+
+$app-theme: mat.m2-define-light-theme((
+  color: (
+    primary: $app-primary,
+    accent: $app-accent,
+    warn: $app-warn,
+  ),
+  typography: $app-typography,
+  density: 0,
+));
+
+@include mat.core();
+@include mat.all-component-themes($app-theme);
+
+:root {
+  --ink: #1c2b26;
+  --paper: #f6f8f5;
+  --surface: #ffffff;
+  --rule: #e2e7e1;
+  --stamp: #d84315;
+  --gold: #ffa000;
+  --ledger: #00796b;
+}
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.mat-mdc-card-title {
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.mat-mdc-card {
+  border: 1px solid var(--rule);
+  box-shadow: none !important;
+}
+
+.mat-mdc-header-cell {
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-size: 12px;
+  font-weight: 600;
+  color: rgba(28, 43, 38, 0.6);
+}
+
+.mono {
+  font-family: 'Roboto Mono', monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+.btn-spinner {
+  display: inline-block;
+  margin-right: 6px;
+}
+
+.empty-state {
+  color: rgba(28, 43, 38, 0.6);
+  font-style: italic;
+  padding: 16px 0;
+}

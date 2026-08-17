@@ -43,8 +43,9 @@
         <tr mat-row *matRowDef="let row; columns: ['codigo', 'descricao', 'quantidade', 'remover'];"></tr>
       </table>
 
-      <button mat-raised-button color="primary" (click)="criarNota()" [disabled]="itensDaNota.length === 0" class="btn-criar">
-        Criar Nota Fiscal
+      <button mat-raised-button color="primary" (click)="criarNota()" [disabled]="itensDaNota.length === 0 || criando" class="btn-criar">
+        <mat-spinner *ngIf="criando" diameter="18" class="btn-spinner"></mat-spinner>
+        {{ criando ? 'Criando...' : 'Criar Nota Fiscal' }}
       </button>
     </mat-card-content>
   </mat-card>
@@ -52,19 +53,23 @@
   <mat-card>
     <mat-card-title>Notas Fiscais</mat-card-title>
     <mat-card-content>
-      <table mat-table [dataSource]="notas" class="mat-elevation-z2">
+      <mat-spinner *ngIf="carregandoNotas" diameter="32"></mat-spinner>
+
+      <table mat-table [dataSource]="notas" class="mat-elevation-z2" *ngIf="!carregandoNotas && notas.length > 0">
         <ng-container matColumnDef="numeracao">
           <th mat-header-cell *matHeaderCellDef>Número</th>
           <td mat-cell *matCellDef="let n">{{ n.numeracao }}</td>
         </ng-container>
         <ng-container matColumnDef="status">
           <th mat-header-cell *matHeaderCellDef>Status</th>
-          <td mat-cell *matCellDef="let n">{{ statusLabel(n.status) }}</td>
+          <td mat-cell *matCellDef="let n">
+            <span class="status-pill" [ngClass]="statusLabel(n.status) === 'Fechada' ? 'status-pill--fechada' : 'status-pill--aberta'">{{ statusLabel(n.status) }}</span>
+          </td>
         </ng-container>
         <ng-container matColumnDef="itens">
           <th mat-header-cell *matHeaderCellDef>Itens</th>
           <td mat-cell *matCellDef="let n">
-            <div *ngFor="let i of n.itens">{{ i.produtoCodigo }} × {{ i.quantidade }}</div>
+            <div *ngFor="let i of n.itens" class="mono">{{ i.produtoCodigo }} × {{ i.quantidade }}</div>
           </td>
         </ng-container>
         <ng-container matColumnDef="acoes">
@@ -73,7 +78,7 @@
             <button mat-raised-button color="accent"
                     [disabled]="statusLabel(n.status) !== 'Aberta' || imprimindoId === n.id"
                     (click)="imprimir(n)">
-              <mat-spinner *ngIf="imprimindoId === n.id" diameter="18" style="display:inline-block; margin-right:6px;"></mat-spinner>
+              <mat-spinner *ngIf="imprimindoId === n.id" diameter="18" class="btn-spinner"></mat-spinner>
               {{ imprimindoId === n.id ? 'Imprimindo...' : 'Imprimir' }}
             </button>
           </td>
@@ -81,6 +86,9 @@
         <tr mat-header-row *matHeaderRowDef="colunasNotas"></tr>
         <tr mat-row *matRowDef="let row; columns: colunasNotas;"></tr>
       </table>
+
+      <p class="empty-state" *ngIf="!carregandoNotas && !erroAoCarregarNotas && notas.length === 0">Nenhuma nota fiscal criada ainda.</p>
+      <p class="empty-state" *ngIf="!carregandoNotas && erroAoCarregarNotas">Não foi possível carregar a lista de notas fiscais.</p>
     </mat-card-content>
   </mat-card>
 </div>

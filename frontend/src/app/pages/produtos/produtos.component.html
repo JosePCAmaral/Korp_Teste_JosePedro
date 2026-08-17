@@ -18,8 +18,9 @@
           <input matInput type="number" formControlName="saldo">
         </mat-form-field>
 
-        <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid">
-          Cadastrar
+        <button mat-raised-button color="primary" type="submit" [disabled]="form.invalid || salvando">
+          <mat-spinner *ngIf="salvando" diameter="18" class="btn-spinner"></mat-spinner>
+          {{ salvando ? 'Salvando...' : 'Cadastrar' }}
         </button>
       </form>
     </mat-card-content>
@@ -28,7 +29,9 @@
   <mat-card>
     <mat-card-title>Produtos cadastrados</mat-card-title>
     <mat-card-content>
-      <table mat-table [dataSource]="produtos" class="mat-elevation-z2">
+      <mat-spinner *ngIf="carregandoProdutos" diameter="32"></mat-spinner>
+
+      <table mat-table [dataSource]="produtos" class="mat-elevation-z2" *ngIf="!carregandoProdutos && produtos.length > 0">
         <ng-container matColumnDef="codigo">
           <th mat-header-cell *matHeaderCellDef>Código</th>
           <td mat-cell *matCellDef="let p">{{ p.codigo }}</td>
@@ -41,12 +44,15 @@
 
         <ng-container matColumnDef="saldo">
           <th mat-header-cell *matHeaderCellDef>Saldo</th>
-          <td mat-cell *matCellDef="let p">{{ p.saldo }}</td>
+          <td mat-cell *matCellDef="let p" [ngClass]="{ 'saldo-zero': p.saldo === 0, 'saldo-baixo': p.saldo > 0 && p.saldo <= 5 }">{{ p.saldo }}</td>
         </ng-container>
 
         <tr mat-header-row *matHeaderRowDef="colunas"></tr>
         <tr mat-row *matRowDef="let row; columns: colunas;"></tr>
       </table>
+
+      <p class="empty-state" *ngIf="!carregandoProdutos && !erroAoCarregarProdutos && produtos.length === 0">Nenhum produto cadastrado ainda.</p>
+      <p class="empty-state" *ngIf="!carregandoProdutos && erroAoCarregarProdutos">Não foi possível carregar a lista de produtos.</p>
     </mat-card-content>
   </mat-card>
 </div>

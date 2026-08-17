@@ -3,7 +3,7 @@
   flex-direction: column;
   gap: 24px;
   padding: 24px;
-  max-width: 800px;
+  max-width: 900px;
   margin: 0 auto;
 }
 
@@ -16,4 +16,24 @@
 
 table {
   width: 100%;
+}
+
+.mat-column-codigo,
+.mat-column-saldo {
+  font-family: 'Roboto Mono', monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+.mat-column-saldo {
+  text-align: right;
+}
+
+.saldo-zero {
+  color: var(--stamp);
+  font-weight: 600;
+}
+
+.saldo-baixo {
+  color: var(--gold);
+  font-weight: 600;
 }

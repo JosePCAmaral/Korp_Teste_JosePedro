@@ -1,5 +1,7 @@
-<nav style="padding: 12px 24px; background: #3f51b5; display: flex; gap: 24px;">
-  <a routerLink="/produtos" style="color: white; text-decoration: none;">Produtos</a>
-  <a routerLink="/notas-fiscais" style="color: white; text-decoration: none;">Notas Fiscais</a>
-</nav>
+<mat-toolbar color="primary">
+  <span class="app-title">KORP · Notas Fiscais</span>
+  <span class="spacer"></span>
+  <a mat-button routerLink="/produtos" routerLinkActive="link-active">Produtos</a>
+  <a mat-button routerLink="/notas-fiscais" routerLinkActive="link-active">Notas Fiscais</a>
+</mat-toolbar>
 <router-outlet />
