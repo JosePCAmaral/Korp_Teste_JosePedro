@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Estoque.Api.Migrations
 {
     [DbContext(typeof(EstoqueDbContext))]
-    [Migration("20260818000149_AddIdempotencyRecords")]
-    partial class AddIdempotencyRecords
+    [Migration("20260818000609_AddRowVersionToProduto")]
+    partial class AddRowVersionToProduto
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -39,6 +39,12 @@ namespace Estoque.Api.Migrations
                     b.Property<string>("Descricao")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<byte[]>("RowVersion")
+                        .IsConcurrencyToken()
+                        .IsRequired()
+                        .ValueGeneratedOnAddOrUpdate()
+                        .HasColumnType("rowversion");
 
                     b.Property<int>("Saldo")
                         .HasColumnType("int");

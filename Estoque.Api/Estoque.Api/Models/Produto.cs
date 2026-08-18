@@ -1,4 +1,6 @@
-﻿namespace Estoque.Api.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace Estoque.Api.Models
 {
     public class Produto
     {
@@ -6,5 +8,8 @@
         public string Codigo { get; set; } = string.Empty;
         public string Descricao { get; set; } = string.Empty;
         public int Saldo { get; set; }
+
+        [Timestamp]
+        public byte[] RowVersion { get; set; } = default!;
     }
 }
