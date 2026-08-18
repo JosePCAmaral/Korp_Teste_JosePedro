@@ -56,7 +56,7 @@ Os dois serviços têm bancos de dados próprios e independentes (`KorpEstoqueDb
 - [Ollama](https://ollama.com) instalado, com o modelo `llama3.2:1b` baixado (`ollama pull llama3.2:1b`) — necessário apenas para a funcionalidade de sugestão de descrição via IA; o restante do sistema funciona normalmente sem ele.
 
 ### Backend
-1. Abra `Korp_Teste_JosePedro.sln` no Visual Studio.
+1. Abra `Estoque.Api/Estoque.Api.sln` no Visual Studio (a solution já inclui os dois projetos, Estoque.Api e Faturamento.Api).
 2. Restaure os pacotes NuGet (feito automaticamente ao abrir a solution).
 3. Aplique as migrations em cada projeto (Console do Gerenciador de Pacotes, alternando o "Default project"):
    ```
