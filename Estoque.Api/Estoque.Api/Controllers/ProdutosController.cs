@@ -94,7 +94,16 @@
                 return BadRequest($"Saldo insuficiente para o produto {produto.Codigo}. Saldo atual: {produto.Saldo}.");
 
             produto.Saldo -= quantidade;
-            await _context.SaveChangesAsync();
+
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return Conflict($"O produto {produto.Codigo} foi alterado por outra operação simultânea. Tente novamente.");
+            }
+
             return Ok(produto);
         }
     }
