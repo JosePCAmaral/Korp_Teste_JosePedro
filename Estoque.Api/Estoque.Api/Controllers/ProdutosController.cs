@@ -2,6 +2,7 @@
 {
     using Estoque.Api.Data;
     using Estoque.Api.Models;
+    using Estoque.Api.Services;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.EntityFrameworkCore;
 
@@ -10,10 +11,33 @@
     public class ProdutosController : ControllerBase
     {
         private readonly EstoqueDbContext _context;
+        private readonly OllamaClient _ollamaClient;
 
-        public ProdutosController(EstoqueDbContext context)
+        public ProdutosController(EstoqueDbContext context, OllamaClient ollamaClient)
         {
             _context = context;
+            _ollamaClient = ollamaClient;
+        }
+
+        [HttpGet("sugerir-descricao")]
+        public async Task<IActionResult> SugerirDescricao([FromQuery] string codigo)
+        {
+            if (string.IsNullOrWhiteSpace(codigo))
+                return BadRequest("Informe um código para gerar a sugestão.");
+
+            try
+            {
+                var descricao = await _ollamaClient.SugerirDescricaoAsync(codigo);
+                return Ok(new { descricao });
+            }
+            catch (HttpRequestException)
+            {
+                return StatusCode(503, "Serviço de IA (Ollama) indisponível. Verifique se está rodando localmente.");
+            }
+            catch (TaskCanceledException)
+            {
+                return StatusCode(503, "O serviço de IA demorou demais para responder. Tente novamente.");
+            }
         }
 
         [HttpGet]

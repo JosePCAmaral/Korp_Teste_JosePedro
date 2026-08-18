@@ -35,6 +35,7 @@ export class ProdutosComponent implements OnInit {
   carregandoProdutos = false;
   erroAoCarregarProdutos = false;
   salvando = false;
+  gerandoSugestao = false;
 
   form = this.fb.group({
     codigo: ['', Validators.required],
@@ -54,6 +55,25 @@ export class ProdutosComponent implements OnInit {
       .subscribe({
         next: (produtos) => this.produtos = produtos,
         error: () => this.erroAoCarregarProdutos = true
+      });
+  }
+
+  sugerirDescricao(): void {
+    const codigo = this.form.get('codigo')?.value;
+    if (!codigo) {
+      this.snackBar.open('Digite um código antes de pedir a sugestão.', 'Fechar', { duration: 3000 });
+      return;
+    }
+
+    this.gerandoSugestao = true;
+    this.produtoService.sugerirDescricao(codigo)
+      .pipe(finalize(() => this.gerandoSugestao = false))
+      .subscribe({
+        next: (res) => this.form.patchValue({ descricao: res.descricao }),
+        error: (err) => {
+          const mensagem = typeof err.error === 'string' ? err.error : 'Erro ao gerar sugestão com IA.';
+          this.snackBar.open(mensagem, 'Fechar', { duration: 4000 });
+        }
       });
   }
 

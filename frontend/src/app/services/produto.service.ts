@@ -17,4 +17,8 @@ export class ProdutoService {
   create(produto: Produto): Observable<Produto> {
     return this.http.post<Produto>(this.baseUrl, produto);
   }
+  
+  sugerirDescricao(codigo: string): Observable<{ descricao: string }> {
+  return this.http.get<{ descricao: string }>(`${this.baseUrl}/sugerir-descricao`, { params: { codigo } });
+}
 }

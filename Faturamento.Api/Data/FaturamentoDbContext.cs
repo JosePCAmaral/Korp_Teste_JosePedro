@@ -8,5 +8,6 @@
         public FaturamentoDbContext(DbContextOptions<FaturamentoDbContext> options) : base(options) { }
         public DbSet<NotaFiscal> NotasFiscais => Set<NotaFiscal>();
         public DbSet<ItemNotaFiscal> Itens => Set<ItemNotaFiscal>();
+        public DbSet<IdempotencyRecord> IdempotencyRecords => Set<IdempotencyRecord>();
     }
 }

@@ -8,6 +8,11 @@
           <input matInput formControlName="codigo">
         </mat-form-field>
 
+        <button mat-stroked-button type="button" (click)="sugerirDescricao()" [disabled]="gerandoSugestao" class="btn-ia">
+          <mat-spinner *ngIf="gerandoSugestao" diameter="18" class="btn-spinner"></mat-spinner>
+          {{ gerandoSugestao ? 'Gerando...' : 'Sugerir descrição com IA' }}
+        </button>
+
         <mat-form-field appearance="outline">
           <mat-label>Descrição</mat-label>
           <input matInput formControlName="descricao">
