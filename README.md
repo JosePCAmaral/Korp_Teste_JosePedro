@@ -44,7 +44,7 @@ Os dois serviços têm bancos de dados próprios e independentes (`KorpEstoqueDb
 
 ### Opcionais implementadas
 - **Tratamento de concorrência**: coluna de controle de versão (`RowVersion`/concorrência otimista) no Produto. Duas requisições de baixa de saldo disputando o mesmo produto (ex.: saldo 1, duas notas simultâneas) resultam em uma bem-sucedida e outra rejeitada com erro claro, sem jamais deixar o saldo negativo.
-- **Uso de Inteligência Artificial**: botão "Sugerir descrição com IA" no cadastro de produto. O Estoque.Api chama um modelo LLM rodando localmente via [Ollama](https://ollama.com) (`llama3.2:1b`), gerando uma sugestão de nome de produto a partir do código informado — sem depender de internet ou de chave de API paga.
+- **Uso de Inteligência Artificial**: botão "Gerar código com IA" no cadastro de produto. O Estoque.Api chama um modelo LLM rodando localmente via [Ollama](https://ollama.com) (`llama3.2:1b`) para sugerir um código curto (formato `XXX-YYY`) a partir da descrição informada — sem depender de internet ou de chave de API paga. Se o Ollama estiver indisponível ou responder algo fora do formato esperado, um gerador determinístico (abreviação das palavras-chave da descrição) assume automaticamente, sem quebrar a funcionalidade.
 - **Idempotência**: o endpoint de impressão de nota (`POST /api/notasfiscais/{id}/imprimir`) aceita um header opcional `Idempotency-Key`. Repetir a mesma chamada com a mesma chave devolve a resposta já processada anteriormente, sem repetir a baixa de saldo.
 
 ## Como executar
@@ -53,7 +53,7 @@ Os dois serviços têm bancos de dados próprios e independentes (`KorpEstoqueDb
 - .NET 8 SDK
 - SQL Server LocalDB (instalado junto com o Visual Studio, workload "ASP.NET e desenvolvimento Web")
 - Node.js 18+ e Angular CLI (`npm install -g @angular/cli`)
-- [Ollama](https://ollama.com) instalado, com o modelo `llama3.2:1b` baixado (`ollama pull llama3.2:1b`) — necessário apenas para a funcionalidade de sugestão de descrição via IA; o restante do sistema funciona normalmente sem ele.
+- [Ollama](https://ollama.com) instalado, com o modelo `llama3.2:1b` baixado (`ollama pull llama3.2:1b`) — necessário apenas para a funcionalidade de geração de código via IA usar o modelo de fato; sem ele, o próprio endpoint cai automaticamente no gerador de código determinístico (fallback), então o restante do sistema funciona normalmente sem o Ollama rodando.
 
 ### Backend
 1. Abra `Estoque.Api/Estoque.Api.sln` no Visual Studio (a solution já inclui os dois projetos, Estoque.Api e Faturamento.Api).
@@ -86,7 +86,7 @@ Acesse `http://localhost:4200`.
 | POST | `/api/produtos` | Cadastra produto |
 | PUT | `/api/produtos/{id}` | Atualiza produto |
 | POST | `/api/produtos/{id}/baixa` | Baixa saldo (uso interno, chamado pelo Faturamento) |
-| GET | `/api/produtos/sugerir-descricao?codigo=` | Sugestão de descrição via IA local |
+| GET | `/api/produtos/sugerir-codigo?descricao=` | Geração de código via IA local (com fallback determinístico) |
 
 **Faturamento.Api**
 | Método | Rota | Descrição |
