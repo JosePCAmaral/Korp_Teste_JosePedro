@@ -58,22 +58,19 @@ export class ProdutosComponent implements OnInit {
       });
   }
 
-  sugerirDescricao(): void {
-    const codigo = this.form.get('codigo')?.value;
-    if (!codigo) {
-      this.snackBar.open('Digite um código antes de pedir a sugestão.', 'Fechar', { duration: 3000 });
+  sugerirCodigo(): void {
+    const descricao = this.form.get('descricao')?.value;
+    if (!descricao) {
+      this.snackBar.open('Digite uma descrição antes de gerar o código.', 'Fechar', { duration: 3000 });
       return;
     }
 
     this.gerandoSugestao = true;
-    this.produtoService.sugerirDescricao(codigo)
+    this.produtoService.sugerirCodigo(descricao)
       .pipe(finalize(() => this.gerandoSugestao = false))
       .subscribe({
-        next: (res) => this.form.patchValue({ descricao: res.descricao }),
-        error: (err) => {
-          const mensagem = typeof err.error === 'string' ? err.error : 'Erro ao gerar sugestão com IA.';
-          this.snackBar.open(mensagem, 'Fechar', { duration: 4000 });
-        }
+        next: (res) => this.form.patchValue({ codigo: res.codigo }),
+        error: () => this.snackBar.open('Erro ao gerar código com IA.', 'Fechar', { duration: 4000 })
       });
   }
 

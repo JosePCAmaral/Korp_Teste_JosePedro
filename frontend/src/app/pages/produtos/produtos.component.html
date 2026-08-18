@@ -4,18 +4,18 @@
     <mat-card-content>
       <form [formGroup]="form" (ngSubmit)="salvar()" class="form-produto">
         <mat-form-field appearance="outline">
-          <mat-label>Código</mat-label>
-          <input matInput formControlName="codigo">
+          <mat-label>Descrição</mat-label>
+          <input matInput formControlName="descricao">
         </mat-form-field>
 
-        <button mat-stroked-button type="button" (click)="sugerirDescricao()" [disabled]="gerandoSugestao" class="btn-ia">
+        <button mat-stroked-button type="button" (click)="sugerirCodigo()" [disabled]="gerandoSugestao" class="btn-ia">
           <mat-spinner *ngIf="gerandoSugestao" diameter="18" class="btn-spinner"></mat-spinner>
-          {{ gerandoSugestao ? 'Gerando...' : 'Sugerir descrição com IA' }}
+          {{ gerandoSugestao ? 'Gerando...' : 'Gerar código com IA' }}
         </button>
 
         <mat-form-field appearance="outline">
-          <mat-label>Descrição</mat-label>
-          <input matInput formControlName="descricao">
+          <mat-label>Código</mat-label>
+          <input matInput formControlName="codigo">
         </mat-form-field>
 
         <mat-form-field appearance="outline">

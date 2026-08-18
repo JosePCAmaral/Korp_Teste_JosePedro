@@ -19,25 +19,14 @@
             _ollamaClient = ollamaClient;
         }
 
-        [HttpGet("sugerir-descricao")]
-        public async Task<IActionResult> SugerirDescricao([FromQuery] string codigo)
+        [HttpGet("sugerir-codigo")]
+        public async Task<IActionResult> SugerirCodigo([FromQuery] string descricao)
         {
-            if (string.IsNullOrWhiteSpace(codigo))
-                return BadRequest("Informe um código para gerar a sugestão.");
+            if (string.IsNullOrWhiteSpace(descricao))
+                return BadRequest("Informe uma descrição para gerar o código.");
 
-            try
-            {
-                var descricao = await _ollamaClient.SugerirDescricaoAsync(codigo);
-                return Ok(new { descricao });
-            }
-            catch (HttpRequestException)
-            {
-                return StatusCode(503, "Serviço de IA (Ollama) indisponível. Verifique se está rodando localmente.");
-            }
-            catch (TaskCanceledException)
-            {
-                return StatusCode(503, "O serviço de IA demorou demais para responder. Tente novamente.");
-            }
+            var codigo = await _ollamaClient.SugerirCodigoAsync(descricao);
+            return Ok(new { codigo });
         }
 
         [HttpGet]
